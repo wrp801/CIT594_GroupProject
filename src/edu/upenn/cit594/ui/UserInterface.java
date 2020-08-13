@@ -43,7 +43,12 @@ public class UserInterface {
 
         if (choice == 0) System.exit(0);
         if (choice == 1) processor.displayTotalPopulation();
-        if (choice == 1) processor.displayFinesPerCapita();
+        if (choice == 2) processor.displayFinesPerCapita();
+        if (choice == 3) {
+            System.out.println("Enter a zip code");
+            int zipEntered = in.nextInt(); // error check later
+            processor.displayAvgMarketValue(zipEntered);
+        }
 
     }
 
