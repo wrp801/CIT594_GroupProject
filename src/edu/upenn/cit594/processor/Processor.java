@@ -1,7 +1,9 @@
 package edu.upenn.cit594.processor;
 
+import edu.upenn.cit594.data.Violation;
 import edu.upenn.cit594.data.Zipcode;
 import edu.upenn.cit594.data.Zipcode;
+import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 
@@ -24,22 +26,45 @@ public class Processor {
      */
 
     protected ZipcodeReader zipCodeReader;
-    protected HashMap<Integer, Integer> zipCodes;
+    protected HashMap<Integer, Zipcode> zipCodes;
+
+    protected ViolationReader violationReader;
+    protected HashMap<Integer, Violation> violations;
 
     // Other reader instance vars to come later
 
-    public Processor (ZipcodeReader zipCodeReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
+    public Processor (ZipcodeReader zipCodeReader, ViolationReader violationReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
         this.zipCodeReader = zipCodeReader;
         zipCodes = zipCodeReader.read();
 
+        this.violationReader = violationReader;
+        violations = violationReader.read();
+
     }
 
-    public void displayTotalPopAllZipCodes() {
+    public void displayTotalPopulation() {
 
         int popSum = 0;
-        for (Integer zipCode : zipCodes.keySet()) popSum += zipCodes.get(zipCode);
+        for (Integer zipCode : zipCodes.keySet()) popSum += zipCodes.get(zipCode).getPopulation();
         System.out.println(popSum);
+    }
+
+    public void displayFinesPerCapita() {
+
+        for (Violation violation : violations.values()) {
+
+            int violationZip = violation.getZipCode();
+            zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+
+        }
+
+        for (Zipcode zipcode : zipCodes.values()) {
+            double finesPerCapita = zipcode.getTotalFines() / zipcode.getPopulation();
+            System.out.println(zipcode.getZipcode() + " " + finesPerCapita + "\n");
+        }
+
+        System.out.println("");
     }
 
 //    protected ZipcodeReader zipCodeReader;
