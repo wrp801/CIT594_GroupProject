@@ -1,10 +1,13 @@
 package edu.upenn.cit594.processor;
 
-import edu.upenn.cit594.data.ZipCode;
 import edu.upenn.cit594.data.Zipcode;
-import edu.upenn.cit594.datamanagement.ZipCodeReader;
+import edu.upenn.cit594.data.Zipcode;
+import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.HashMap;
 import java.util.List;
 
 public class Processor {
@@ -21,33 +24,42 @@ public class Processor {
      */
 
     protected ZipcodeReader zipCodeReader;
-    protected List<Zipcode> zipCodes;
+    protected HashMap<Integer, Integer> zipCodes;
 
     // Other reader instance vars to come later
 
-    public Processor (ZipcodeReader zipCodeReader) {
+    public Processor (ZipcodeReader zipCodeReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
         this.zipCodeReader = zipCodeReader;
-        zipCodes = zipCodeReader.getAllZipCodes();
+        zipCodes = zipCodeReader.read();
 
     }
-
-//    /**
-//     * Dummy constructor until ZipCodeReader is created
-//     */
-//
-//    public Processor (List<ZipCode> zipCodes) {
-//
-//        this.zipCodes = zipCodes;
-//
-//    }
 
     public void displayTotalPopAllZipCodes() {
 
         int popSum = 0;
-        for (ZipCode zipCode : zipCodes) popSum += zipCode.getPop();
+        for (Integer zipCode : zipCodes.keySet()) popSum += zipCodes.get(zipCode);
         System.out.println(popSum);
     }
+
+//    protected ZipcodeReader zipCodeReader;
+//    protected List<Zipcode> zipCodes;
+//
+//    // Other reader instance vars to come later
+//
+//    public Processor (ZipcodeReader zipCodeReader) {
+//
+//        this.zipCodeReader = zipCodeReader;
+//        zipCodes = zipCodeReader.read();
+//
+//    }
+//
+//    public void displayTotalPopAllZipCodes() {
+//
+//        int popSum = 0;
+//        for (Zipcode zipCode : zipCodes) popSum += zipCode.getPopulation();
+//        System.out.println(popSum);
+//    }
 
 
 }

@@ -26,7 +26,7 @@ public class ZipcodeReader implements Reader {
 
         try {
             while ((line = reader.readLine())!=null) {
-                String lineData [] = line.split(" ");
+                String[] lineData = line.split(" ");
                 int zip = Integer.parseInt(lineData[0]);
                 int pop = Integer.parseInt(lineData[1]);
                 ret_map.put(zip,pop);
@@ -35,7 +35,7 @@ public class ZipcodeReader implements Reader {
         catch (IOException e ) {
             e.printStackTrace();
         }
-        return null;
+        return ret_map;
     }
 
 
