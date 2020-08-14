@@ -25,7 +25,20 @@ public class Property {
         return zipcode;
     }
 
+
+    public void setZipcode(int zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void setMarketValue(int marketValue) {
+        this.marketValue = marketValue;
+    }
+
+    public void setTotalLiveableArea(int totalLiveableArea) {
+        this.totalLiveableArea = totalLiveableArea;
+
     public String getBuildingcode() {
         return buildingcode;
+
     }
 }

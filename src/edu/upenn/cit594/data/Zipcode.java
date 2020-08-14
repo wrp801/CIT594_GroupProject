@@ -5,6 +5,7 @@ public class Zipcode {
     protected int population;
     protected double totalFines;        // placing it here in Data layer may be bad design - revisit
     protected double totalMarketValue;  // placing it here in Data layer may be bad design - revisit
+    protected double totalLivableArea;  // placing it here in Data layer may be bad design - revisit
     protected int numHouses;  // placing it here in Data layer may be bad design - revisit
 
     public Zipcode(int zipcode, int population) {
@@ -37,6 +38,10 @@ public class Zipcode {
         return numHouses;
     }
 
+    public double getTotalLivableArea() {
+        return totalLivableArea;
+    }
+
     public void setZipcode(int zipcode) {
         this.zipcode = zipcode;
     }
@@ -51,5 +56,9 @@ public class Zipcode {
 
     public void setTotalMarketValue(double totalMarketValue) {
         this.totalMarketValue = totalMarketValue;
+    }
+
+    public void setTotalLivableArea(double totalLivableArea) {
+        this.totalLivableArea = totalLivableArea;
     }
 }
