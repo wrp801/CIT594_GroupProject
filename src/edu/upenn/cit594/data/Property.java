@@ -22,4 +22,16 @@ public class Property {
     public int getZipcode() {
         return zipcode;
     }
+
+    public void setZipcode(int zipcode) {
+        this.zipcode = zipcode;
+    }
+
+    public void setMarketValue(int marketValue) {
+        this.marketValue = marketValue;
+    }
+
+    public void setTotalLiveableArea(int totalLiveableArea) {
+        this.totalLiveableArea = totalLiveableArea;
+    }
 }

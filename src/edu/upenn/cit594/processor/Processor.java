@@ -91,7 +91,30 @@ public class Processor {
             }
 
         }
-        
+
+        double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
+        System.out.println(avgMarketValue);
+
+    }
+
+    public void displayAvgTotalLivableArea(int enteredZip) {
+
+        // DUMMY values
+
+        List<Property> properties = new ArrayList<>();
+
+        // This will be overwritten by Strategy Pattern
+
+        for (Property property : properties) {
+
+            int propertyZip = property.getZipcode();
+            if (propertyZip == enteredZip) {
+                zipCodes.get(propertyZip).setTotalLivableArea(zipCodes.get(propertyZip).getTotalLivableArea() + property.getTotalLiveableArea());
+                zipCodes.get(propertyZip).incrementHouses();
+            }
+
+        }
+
         double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
         System.out.println(avgMarketValue);
 
