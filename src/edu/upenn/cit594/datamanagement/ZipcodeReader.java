@@ -44,7 +44,6 @@ public class ZipcodeReader implements Reader {
 
 }
 
-
 //public class ZipCodeReader {
 //
 //    protected String filename;
