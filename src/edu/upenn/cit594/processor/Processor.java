@@ -91,7 +91,7 @@ public class Processor {
             }
 
         }
-        
+
         double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
         System.out.println(avgMarketValue);
 

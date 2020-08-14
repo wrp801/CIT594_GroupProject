@@ -3,7 +3,7 @@ package edu.upenn.cit594.data;
 import java.util.Date;
 
 public class Violation {
-    protected Date date;
+    protected String date;
     protected int fine;
     protected String description;
     protected int plateId;
@@ -11,7 +11,7 @@ public class Violation {
     protected int ticketNumber;
     protected int zipCode;
 
-    public Violation(Date date, int fine, String description, int plateId, String state, int ticketNumber, int zipCode) {
+    public Violation(String date, int fine, String description, int plateId, String state, int ticketNumber, int zipCode) {
         this.date = date;
         this.fine = fine;
         this.description = description;
@@ -21,7 +21,7 @@ public class Violation {
         this.zipCode = zipCode;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
