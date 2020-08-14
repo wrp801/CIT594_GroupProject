@@ -1,8 +1,8 @@
 package edu.upenn.cit594.processor;
 
-import edu.upenn.cit594.data.ZipCode;
+//import edu.upenn.cit594.data.ZipCode;
 import edu.upenn.cit594.data.Zipcode;
-import edu.upenn.cit594.datamanagement.ZipCodeReader;
+//import edu.upenn.cit594.datamanagement.ZipCodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 
 import java.util.List;
@@ -20,11 +20,12 @@ public class Processor {
      *
      */
 
+
     protected ZipcodeReader zipCodeReader;
     protected List<Zipcode> zipCodes;
 
     // Other reader instance vars to come later
-
+/*
     public Processor (ZipcodeReader zipCodeReader) {
 
         this.zipCodeReader = zipCodeReader;
@@ -41,13 +42,16 @@ public class Processor {
 //        this.zipCodes = zipCodes;
 //
 //    }
-
+/*
     public void displayTotalPopAllZipCodes() {
 
         int popSum = 0;
         for (ZipCode zipCode : zipCodes) popSum += zipCode.getPop();
         System.out.println(popSum);
     }
+
+
+ */
 
 
 }
