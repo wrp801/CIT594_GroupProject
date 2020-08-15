@@ -118,14 +118,96 @@ public class Processor {
             }
         }
 
-        System.out.println(totalValue / numProperties);
+        System.out.println(totalValue / zipCodes.get(enteredZip).getPopulation());
+        System.out.println("VAL: " + totalValue);
+        System.out.println("POP: " + zipCodes.get(enteredZip).getPopulation());
         System.out.println("");
 
     }
 
+    public void displayFinesVsMarketValue() {
+
+        HashMap<Integer, double[]> zipFinesAndValues = new HashMap<>();
+
+        // get fines per capita
+        for (Violation violation : violations.values()) {
+//            System.out.println("ZIP: " + violation.getZipCode());
+            if (violation.getZipCode() != 0) {
+                try {
+                    int violationZip = violation.getZipCode();
+                    if (!zipFinesAndValues.containsKey(violationZip)) {
+                        zipFinesAndValues.put(violationZip, new double[]{violation.getFine(), 0, 0, 0});
+                    } else {
+                        zipFinesAndValues.get(violationZip)[0] += violation.getFine();
+                        //                    zipFinesAndValues.put(violationZip, zipFinesAndValues.get(violationZip)[0] + violation.getFine());
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
+
+        // get market value per capita
+        // can we combine with previous function or does that have to be a void that prints only?
+
+        double totalValue = 0.0;
+        int numProperties = 0; // this is probably better design than instance variables in the Property class
+
+        for (Property property : properties.values()) {
+            if (property.getZipcode() != 0) {
+                try {
+                    int propertyZip = property.getZipcode();
+                    if (!zipFinesAndValues.containsKey(propertyZip)) {
+                        zipFinesAndValues.put(propertyZip, new double[]{0, property.getMarketValue(), 0, 0});
+                    } else {
+                        zipFinesAndValues.get(propertyZip)[1] += property.getMarketValue();
+//                    zipFinesAndValues.put(violationZip, zipFinesAndValues.get(violationZip)[0] + violation.getFine());
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
+
+        for (int zipCode : zipFinesAndValues.keySet()) {
+            System.out.println("ZIP: " + zipCode);
+            double finesPerCapita = zipFinesAndValues.get(zipCode)[0] / zipCodes.get(zipCode).getPopulation();
+            double valuePerCapita = zipFinesAndValues.get(zipCode)[1] / zipCodes.get(zipCode).getPopulation();
+
+            int fineRankCounter  = zipFinesAndValues.size();
+            int valueRankCounter  = zipFinesAndValues.size();
+
+            for (double[] zipInfo : zipFinesAndValues.values()) {
+                if(zipInfo[0] > zipFinesAndValues.get(zipCode)[0]) {
+                    fineRankCounter -- ;
+                }
+                if(zipInfo[1] > zipFinesAndValues.get(zipCode)[1]) {
+                    valueRankCounter -- ;
+                }
+            }
+
+            zipFinesAndValues.get(zipCode)[2] = fineRankCounter;
+            zipFinesAndValues.get(zipCode)[3] = valueRankCounter;
+
+            System.out.println(zipCode + ": ");
+            System.out.println("   Fine amount: " + zipFinesAndValues.get(zipCode)[0]);
+            System.out.println("   Fine rank: " + zipFinesAndValues.get(zipCode)[2]);
+            System.out.println("   Value amount: " + zipFinesAndValues.get(zipCode)[1]);
+            System.out.println("   Value rank: " + zipFinesAndValues.get(zipCode)[3]);
+            System.out.println("");
+        }
+
+
+
+        System.out.println();
+
+    }
+
+
+    // HELPER FUNCTIONS
+
     public void getPopulation(int enteredZip) { // use for debugging
         System.out.println(zipCodes.get(enteredZip).getPopulation());
     }
+
 
 //    protected ZipcodeReader zipCodeReader;
 //    protected List<Zipcode> zipCodes;

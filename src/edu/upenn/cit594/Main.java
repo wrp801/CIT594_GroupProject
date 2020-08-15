@@ -7,6 +7,7 @@ import edu.upenn.cit594.processor.AverageMarketValue;
 import edu.upenn.cit594.processor.Processor;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 
 public class Main {
@@ -33,6 +34,9 @@ public class Main {
 
         System.out.println("\nMarket value per capita:");
         processor.displayMarketValuePerCapita(19133);
+
+        System.out.println("\nFine vs market ranking:");
+        processor.displayFinesVsMarketValue();
 
         // The code block below should replace the dummy block above when finished
 
