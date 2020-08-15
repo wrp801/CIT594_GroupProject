@@ -36,6 +36,7 @@ public class Property {
 
     public void setTotalLiveableArea(int totalLiveableArea) {
         this.totalLiveableArea = totalLiveableArea;
+    }
 
     public String getBuildingcode() {
         return buildingcode;
