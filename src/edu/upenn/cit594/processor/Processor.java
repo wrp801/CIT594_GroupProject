@@ -4,6 +4,7 @@ import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.data.Violation;
 import edu.upenn.cit594.data.Zipcode;
 import edu.upenn.cit594.data.Zipcode;
+import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
@@ -33,17 +34,23 @@ public class Processor {
     protected ViolationReader violationReader;
     protected HashMap<Integer, Violation> violations;
 
+    protected PropertyReader propertyReader;
+    protected HashMap<Integer, Property> properties;
+
     // Property reader?
 
     // Other reader instance vars to come later
 
-    public Processor (ZipcodeReader zipCodeReader, ViolationReader violationReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
+    public Processor (ZipcodeReader zipCodeReader, ViolationReader violationReader, PropertyReader propertyReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
         this.zipCodeReader = zipCodeReader;
         zipCodes = zipCodeReader.read();
 
         this.violationReader = violationReader;
         violations = violationReader.read();
+
+        this.propertyReader = propertyReader;
+        properties = propertyReader.read();
 
     }
 
@@ -63,8 +70,11 @@ public class Processor {
 
         for (Violation violation : violations.values()) {
 
-            int violationZip = violation.getZipCode();
-            zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+            try {
+                int violationZip = violation.getZipCode();
+                zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+            } catch (NullPointerException ignored) {
+            }
 
         }
 
@@ -80,41 +90,17 @@ public class Processor {
 
         // DUMMY values
 
-        List<Property> properties = new ArrayList<>();
+//        List<Property> properties = new ArrayList<>();
 
-        for (Property property : properties) {
-
-            int propertyZip = property.getZipcode();
-            if (propertyZip == enteredZip) {
-                zipCodes.get(propertyZip).setTotalMarketValue(zipCodes.get(propertyZip).getTotalMarketValue() + property.getMarketValue());
-                zipCodes.get(propertyZip).incrementHouses();
-            }
-
-        }
-
-
-        double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
-        System.out.println(avgMarketValue);
+        AverageMarketValue averageMarketValue = new AverageMarketValue();
+        averageMarketValue.displayAverage(properties, enteredZip);
 
     }
 
     public void displayAvgTotalLivableArea(int enteredZip) {
 
-        // DUMMY values
-
-        List<Property> properties = new ArrayList<>();
-
-        // This will be overwritten by Strategy Pattern
-
-        for (Property property : properties) {
-
-            int propertyZip = property.getZipcode();
-            if (propertyZip == enteredZip) {
-                zipCodes.get(propertyZip).setTotalLivableArea(zipCodes.get(propertyZip).getTotalLivableArea() + property.getTotalLiveableArea());
-                zipCodes.get(propertyZip).incrementHouses();
-            }
-
-        }
+        AverageLivableArea averageLivableArea = new AverageLivableArea();
+        averageLivableArea.displayAverage(properties, enteredZip);
 
     }
 
