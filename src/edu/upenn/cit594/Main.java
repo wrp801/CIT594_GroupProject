@@ -25,8 +25,14 @@ public class Main {
         System.out.println("\nMarket value:");
         processor.displayAvgMarketValue(19133);
 
+        System.out.println("\nPopulation: ");
+        processor.getPopulation(19133);
+
         System.out.println("\nLivable area:");
         processor.displayAvgTotalLivableArea(19133);
+
+        System.out.println("\nMarket value per capita:");
+        processor.displayMarketValuePerCapita(19133);
 
         // The code block below should replace the dummy block above when finished
 

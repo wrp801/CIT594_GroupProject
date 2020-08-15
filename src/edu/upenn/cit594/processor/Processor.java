@@ -104,6 +104,29 @@ public class Processor {
 
     }
 
+    public void displayMarketValuePerCapita(int enteredZip) {
+
+        double totalValue = 0.0;
+        int numProperties = 0; // this is probably better design than instance variables in the Property class
+
+        for (Property property : properties.values()) {
+
+            try {
+                totalValue += property.getMarketValue();
+                numProperties ++ ;
+            } catch (NullPointerException ignored) {
+            }
+        }
+
+        System.out.println(totalValue / numProperties);
+        System.out.println("");
+
+    }
+
+    public void getPopulation(int enteredZip) { // use for debugging
+        System.out.println(zipCodes.get(enteredZip).getPopulation());
+    }
+
 //    protected ZipcodeReader zipCodeReader;
 //    protected List<Zipcode> zipCodes;
 //
