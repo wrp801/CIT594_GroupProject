@@ -5,6 +5,7 @@ import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.processor.AverageMarketValue;
 import edu.upenn.cit594.processor.Processor;
+import edu.upenn.cit594.logging.Logger;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
@@ -17,6 +18,9 @@ public class Main {
         ViolationReader violationReader = new ViolationReader("parking.csv", "csv");
         PropertyReader propertyReader = new PropertyReader("properties.csv");
         Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
+
+        Logger l = Logger.getInstance();
+        l.log("1","2","3","4","5");
 
         processor.displayTotalPopulation();
 
@@ -35,8 +39,11 @@ public class Main {
         System.out.println("\nMarket value per capita:");
         processor.displayMarketValuePerCapita(19133);
 
+<<<<<<< HEAD
         System.out.println("\nFine vs market ranking:");
         processor.displayFinesVsMarketValue();
+=======
+>>>>>>> 5c4f2f4953e25ac635221043b5bdf8292a8d12cc
 
         // The code block below should replace the dummy block above when finished
 
