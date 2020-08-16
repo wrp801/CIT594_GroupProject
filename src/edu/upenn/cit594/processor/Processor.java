@@ -12,6 +12,7 @@ import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -132,7 +133,8 @@ public class Processor {
         // get fines per capita
         for (Violation violation : violations.values()) {
 //            System.out.println("ZIP: " + violation.getZipCode());
-            if (violation.getZipCode() != 0) {
+            if (violation.getZipCode() >= 10000) {
+//                System.out.println("ZIP = " + violation.getZipCode());
                 try {
                     int violationZip = violation.getZipCode();
                     if (!zipFinesAndValues.containsKey(violationZip)) {
@@ -153,7 +155,7 @@ public class Processor {
         int numProperties = 0; // this is probably better design than instance variables in the Property class
 
         for (Property property : properties.values()) {
-            if (property.getZipcode() != 0) {
+            if (property.getZipcode() >= 10000) {
                 try {
                     int propertyZip = property.getZipcode();
                     if (!zipFinesAndValues.containsKey(propertyZip)) {
@@ -169,17 +171,26 @@ public class Processor {
 
         for (int zipCode : zipFinesAndValues.keySet()) {
             System.out.println("ZIP: " + zipCode);
-            double finesPerCapita = zipFinesAndValues.get(zipCode)[0] / zipCodes.get(zipCode).getPopulation();
-            double valuePerCapita = zipFinesAndValues.get(zipCode)[1] / zipCodes.get(zipCode).getPopulation();
+            double finesPerCapita = 0;
+            double valuePerCapita = 0;
+            try {
+                zipFinesAndValues.get(zipCode)[0] /= zipCodes.get(zipCode).getPopulation();
+                zipFinesAndValues.get(zipCode)[1] /= zipCodes.get(zipCode).getPopulation();
+            } catch (NullPointerException ignored) {
+                zipFinesAndValues.get(zipCode)[0] = 0;
+                zipFinesAndValues.get(zipCode)[1] = 0;
+            }
+        }
 
+        for  (int zipCode : zipFinesAndValues.keySet()) {
             int fineRankCounter  = zipFinesAndValues.size();
             int valueRankCounter  = zipFinesAndValues.size();
 
             for (double[] zipInfo : zipFinesAndValues.values()) {
-                if(zipInfo[0] > zipFinesAndValues.get(zipCode)[0]) {
+                if(zipInfo[0] < zipFinesAndValues.get(zipCode)[0]) {
                     fineRankCounter -- ;
                 }
-                if(zipInfo[1] > zipFinesAndValues.get(zipCode)[1]) {
+                if(zipInfo[1] < zipFinesAndValues.get(zipCode)[1]) {
                     valueRankCounter -- ;
                 }
             }
@@ -188,14 +199,55 @@ public class Processor {
             zipFinesAndValues.get(zipCode)[3] = valueRankCounter;
 
             System.out.println(zipCode + ": ");
-            System.out.println("   Fine amount: " + zipFinesAndValues.get(zipCode)[0]);
+//            System.out.println("   Fine amount: " + zipFinesAndValues.get(zipCode)[0]);
             System.out.println("   Fine rank: " + zipFinesAndValues.get(zipCode)[2]);
-            System.out.println("   Value amount: " + zipFinesAndValues.get(zipCode)[1]);
+//            System.out.println("   Value amount: " + zipFinesAndValues.get(zipCode)[1]);
             System.out.println("   Value rank: " + zipFinesAndValues.get(zipCode)[3]);
             System.out.println("");
         }
 
+        List<Double> fineRanksSorted = new ArrayList<>();
+        List<Double> valueRanksSorted = new ArrayList<>();
 
+        for (double[] zipInfo : zipFinesAndValues.values()) {
+            fineRanksSorted.add(zipInfo[2]);
+            valueRanksSorted.add(zipInfo[3]);
+        }
+
+        Collections.sort(fineRanksSorted);
+        Collections.sort(valueRanksSorted);
+
+//        System.out.println("FINES:");
+//        for (double item : fineRanksSorted) System.out.println(item);
+//        System.out.println("VALUES:");
+//        for (double item : valueRanksSorted) System.out.println(item);
+
+//        int xCounter = 0;
+//        int yCounter = 0;
+
+//        for (double[] zipInfo : zipFinesAndValues.values()) {
+//            if (zipInfo[2])
+//        }
+
+        System.out.println("ZIP code plot: fine rank vs. value rank\n");
+
+        for (int yCounter = 13; yCounter > 0; yCounter --) {
+            System.out.print("|");
+            for (int xCounter = 1; xCounter <= 13; xCounter ++) {
+                int foundCount = 0;
+                for (double[] zipInfo : zipFinesAndValues.values()) {
+                    if (Math.round(zipInfo[2] / 4) == xCounter) {
+                        if (Math.round(zipInfo[3] / 4) == yCounter) {
+                            foundCount ++ ;
+                        }
+                    }
+                }
+                if (foundCount > 0) System.out.print(" * ");
+                else System.out.print("   ");
+            }
+            System.out.println();
+        }
+        System.out.println(" ___________________________________________");
 
         System.out.println();
 
