@@ -1,21 +1,29 @@
 package edu.upenn.cit594.data;
 
 public class Property {
-    protected int marketValue;
-    protected int totalLiveableArea;
+    protected double marketValue;
+    protected double totalLiveableArea;
     protected int zipcode;
+    protected String buildingcode;
 
-    public Property(int marketValue, int totalLiveableArea, int zipcode) {
+    public Property(double marketValue, double totalLiveableArea, int zipcode) { // there's a less verbose way to overload
         this.marketValue = marketValue;
         this.totalLiveableArea = totalLiveableArea;
         this.zipcode = zipcode;
     }
 
-    public int getMarketValue() {
+    public Property(double marketValue, double totalLiveableArea, int zipcode, String buildingcode) {
+        this.marketValue = marketValue;
+        this.totalLiveableArea = totalLiveableArea;
+        this.zipcode = zipcode;
+        this.buildingcode = buildingcode;
+    }
+
+    public double getMarketValue() {
         return marketValue;
     }
 
-    public int getTotalLiveableArea() {
+    public double getTotalLiveableArea() {
         return totalLiveableArea;
     }
 
@@ -27,11 +35,16 @@ public class Property {
         this.zipcode = zipcode;
     }
 
-    public void setMarketValue(int marketValue) {
+    public void setMarketValue(double marketValue) {
         this.marketValue = marketValue;
     }
 
-    public void setTotalLiveableArea(int totalLiveableArea) {
+    public void setTotalLiveableArea(double totalLiveableArea) {
         this.totalLiveableArea = totalLiveableArea;
+    }
+
+    public String getBuildingcode() {
+        return buildingcode;
+
     }
 }

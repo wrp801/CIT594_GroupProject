@@ -5,7 +5,7 @@ import edu.upenn.cit594.data.Zipcode;
 
 import java.util.HashMap;
 
-public class AverageMarketValue implements AverageByZip{
+public class AverageLivableArea implements AverageByZip{
 
     public void displayAverage(HashMap<Integer, Property> properties, int zipCode) {
 
@@ -17,15 +17,15 @@ public class AverageMarketValue implements AverageByZip{
             try {
                 int propertyZip = property.getZipcode();
                 if (propertyZip == zipCode) {
-                    masterProperty.setMarketValue(masterProperty.getMarketValue() + property.getMarketValue());
+                    masterProperty.setTotalLiveableArea(masterProperty.getTotalLiveableArea() + property.getTotalLiveableArea());
                     propertyCount++;
                 }
             } catch (NullPointerException ignored) {
             }
         }
 
-        double avgMarketValue = masterProperty.getMarketValue() / propertyCount;
-        System.out.println(avgMarketValue);
+        double avgLivableArea = masterProperty.getTotalLiveableArea() / propertyCount;
+        System.out.println(avgLivableArea);
 
     }
 

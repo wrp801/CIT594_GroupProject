@@ -45,9 +45,14 @@ public class UserInterface {
         if (choice == 1) processor.displayTotalPopulation();
         if (choice == 2) processor.displayFinesPerCapita();
         if (choice == 3) {
-            System.out.println("Enter a zip code");
+            System.out.println("Enter a zip code.");
             int zipEntered = in.nextInt(); // error check later
             processor.displayAvgMarketValue(zipEntered);
+        }
+        if (choice == 4) {
+            System.out.println("Enter a zip code.");
+            int zipEntered = in.nextInt(); // error check later
+
         }
 
     }

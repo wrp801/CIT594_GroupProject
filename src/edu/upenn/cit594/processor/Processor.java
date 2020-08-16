@@ -4,6 +4,7 @@ import edu.upenn.cit594.data.Property;
 import edu.upenn.cit594.data.Violation;
 import edu.upenn.cit594.data.Zipcode;
 import edu.upenn.cit594.data.Zipcode;
+import edu.upenn.cit594.datamanagement.PropertyReader;
 import edu.upenn.cit594.datamanagement.ViolationReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
@@ -11,6 +12,7 @@ import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,17 +35,23 @@ public class Processor {
     protected ViolationReader violationReader;
     protected HashMap<Integer, Violation> violations;
 
+    protected PropertyReader propertyReader;
+    protected HashMap<Integer, Property> properties;
+
     // Property reader?
 
     // Other reader instance vars to come later
 
-    public Processor (ZipcodeReader zipCodeReader, ViolationReader violationReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
+    public Processor (ZipcodeReader zipCodeReader, ViolationReader violationReader, PropertyReader propertyReader) throws IOException, ParseException, org.json.simple.parser.ParseException {
 
         this.zipCodeReader = zipCodeReader;
         zipCodes = zipCodeReader.read();
 
         this.violationReader = violationReader;
         violations = violationReader.read();
+
+        this.propertyReader = propertyReader;
+        properties = propertyReader.read();
 
     }
 
@@ -63,8 +71,11 @@ public class Processor {
 
         for (Violation violation : violations.values()) {
 
-            int violationZip = violation.getZipCode();
-            zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+            try {
+                int violationZip = violation.getZipCode();
+                zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+            } catch (NullPointerException ignored) {
+            }
 
         }
 
@@ -80,45 +91,175 @@ public class Processor {
 
         // DUMMY values
 
-        List<Property> properties = new ArrayList<>();
+//        List<Property> properties = new ArrayList<>();
 
-        for (Property property : properties) {
-
-            int propertyZip = property.getZipcode();
-            if (propertyZip == enteredZip) {
-                zipCodes.get(propertyZip).setTotalMarketValue(zipCodes.get(propertyZip).getTotalMarketValue() + property.getMarketValue());
-                zipCodes.get(propertyZip).incrementHouses();
-            }
-
-        }
-
-        double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
-        System.out.println(avgMarketValue);
+        AverageMarketValue averageMarketValue = new AverageMarketValue();
+        averageMarketValue.displayAverage(properties, enteredZip);
 
     }
 
     public void displayAvgTotalLivableArea(int enteredZip) {
 
-        // DUMMY values
-
-        List<Property> properties = new ArrayList<>();
-
-        // This will be overwritten by Strategy Pattern
-
-        for (Property property : properties) {
-
-            int propertyZip = property.getZipcode();
-            if (propertyZip == enteredZip) {
-                zipCodes.get(propertyZip).setTotalLivableArea(zipCodes.get(propertyZip).getTotalLivableArea() + property.getTotalLiveableArea());
-                zipCodes.get(propertyZip).incrementHouses();
-            }
-
-        }
-
-        double avgMarketValue = zipCodes.get(enteredZip).getTotalMarketValue() / zipCodes.get(enteredZip).getNumHouses();
-        System.out.println(avgMarketValue);
+        AverageLivableArea averageLivableArea = new AverageLivableArea();
+        averageLivableArea.displayAverage(properties, enteredZip);
 
     }
+
+    public void displayMarketValuePerCapita(int enteredZip) {
+
+        double totalValue = 0.0;
+        int numProperties = 0; // this is probably better design than instance variables in the Property class
+
+        for (Property property : properties.values()) {
+
+            try {
+                totalValue += property.getMarketValue();
+                numProperties ++ ;
+            } catch (NullPointerException ignored) {
+            }
+        }
+
+        System.out.println(totalValue / zipCodes.get(enteredZip).getPopulation());
+        System.out.println("VAL: " + totalValue);
+        System.out.println("POP: " + zipCodes.get(enteredZip).getPopulation());
+        System.out.println("");
+
+    }
+
+    public void displayFinesVsMarketValue() {
+
+        HashMap<Integer, double[]> zipFinesAndValues = new HashMap<>();
+
+        // get fines per capita
+        for (Violation violation : violations.values()) {
+//            System.out.println("ZIP: " + violation.getZipCode());
+            if (violation.getZipCode() >= 10000) {
+//                System.out.println("ZIP = " + violation.getZipCode());
+                try {
+                    int violationZip = violation.getZipCode();
+                    if (!zipFinesAndValues.containsKey(violationZip)) {
+                        zipFinesAndValues.put(violationZip, new double[]{violation.getFine(), 0, 0, 0});
+                    } else {
+                        zipFinesAndValues.get(violationZip)[0] += violation.getFine();
+                        //                    zipFinesAndValues.put(violationZip, zipFinesAndValues.get(violationZip)[0] + violation.getFine());
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
+
+        // get market value per capita
+        // can we combine with previous function or does that have to be a void that prints only?
+
+        double totalValue = 0.0;
+        int numProperties = 0; // this is probably better design than instance variables in the Property class
+
+        for (Property property : properties.values()) {
+            if (property.getZipcode() >= 10000) {
+                try {
+                    int propertyZip = property.getZipcode();
+                    if (!zipFinesAndValues.containsKey(propertyZip)) {
+                        zipFinesAndValues.put(propertyZip, new double[]{0, property.getMarketValue(), 0, 0});
+                    } else {
+                        zipFinesAndValues.get(propertyZip)[1] += property.getMarketValue();
+//                    zipFinesAndValues.put(violationZip, zipFinesAndValues.get(violationZip)[0] + violation.getFine());
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
+
+        for (int zipCode : zipFinesAndValues.keySet()) {
+            System.out.println("ZIP: " + zipCode);
+            double finesPerCapita = 0;
+            double valuePerCapita = 0;
+            try {
+                zipFinesAndValues.get(zipCode)[0] /= zipCodes.get(zipCode).getPopulation();
+                zipFinesAndValues.get(zipCode)[1] /= zipCodes.get(zipCode).getPopulation();
+            } catch (NullPointerException ignored) {
+                zipFinesAndValues.get(zipCode)[0] = 0;
+                zipFinesAndValues.get(zipCode)[1] = 0;
+            }
+        }
+
+        for  (int zipCode : zipFinesAndValues.keySet()) {
+            int fineRankCounter  = zipFinesAndValues.size();
+            int valueRankCounter  = zipFinesAndValues.size();
+
+            for (double[] zipInfo : zipFinesAndValues.values()) {
+                if(zipInfo[0] < zipFinesAndValues.get(zipCode)[0]) {
+                    fineRankCounter -- ;
+                }
+                if(zipInfo[1] < zipFinesAndValues.get(zipCode)[1]) {
+                    valueRankCounter -- ;
+                }
+            }
+
+            zipFinesAndValues.get(zipCode)[2] = fineRankCounter;
+            zipFinesAndValues.get(zipCode)[3] = valueRankCounter;
+
+            System.out.println(zipCode + ": ");
+//            System.out.println("   Fine amount: " + zipFinesAndValues.get(zipCode)[0]);
+            System.out.println("   Fine rank: " + zipFinesAndValues.get(zipCode)[2]);
+//            System.out.println("   Value amount: " + zipFinesAndValues.get(zipCode)[1]);
+            System.out.println("   Value rank: " + zipFinesAndValues.get(zipCode)[3]);
+            System.out.println("");
+        }
+
+        List<Double> fineRanksSorted = new ArrayList<>();
+        List<Double> valueRanksSorted = new ArrayList<>();
+
+        for (double[] zipInfo : zipFinesAndValues.values()) {
+            fineRanksSorted.add(zipInfo[2]);
+            valueRanksSorted.add(zipInfo[3]);
+        }
+
+        Collections.sort(fineRanksSorted);
+        Collections.sort(valueRanksSorted);
+
+//        System.out.println("FINES:");
+//        for (double item : fineRanksSorted) System.out.println(item);
+//        System.out.println("VALUES:");
+//        for (double item : valueRanksSorted) System.out.println(item);
+
+//        int xCounter = 0;
+//        int yCounter = 0;
+
+//        for (double[] zipInfo : zipFinesAndValues.values()) {
+//            if (zipInfo[2])
+//        }
+
+        System.out.println("ZIP code plot: fine rank vs. value rank\n");
+
+        for (int yCounter = 13; yCounter > 0; yCounter --) {
+            System.out.print("|");
+            for (int xCounter = 1; xCounter <= 13; xCounter ++) {
+                int foundCount = 0;
+                for (double[] zipInfo : zipFinesAndValues.values()) {
+                    if (Math.round(zipInfo[2] / 4) == xCounter) {
+                        if (Math.round(zipInfo[3] / 4) == yCounter) {
+                            foundCount ++ ;
+                        }
+                    }
+                }
+                if (foundCount > 0) System.out.print(" * ");
+                else System.out.print("   ");
+            }
+            System.out.println();
+        }
+        System.out.println(" ___________________________________________");
+
+        System.out.println();
+
+    }
+
+
+    // HELPER FUNCTIONS
+
+    public void getPopulation(int enteredZip) { // use for debugging
+        System.out.println(zipCodes.get(enteredZip).getPopulation());
+    }
+
 
 //    protected ZipcodeReader zipCodeReader;
 //    protected List<Zipcode> zipCodes;

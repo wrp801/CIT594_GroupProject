@@ -35,21 +35,22 @@ public class ViolationReader implements Reader{
         int linenum = 1;
         reader = new BufferedReader(f);
         JSONArray ja = (JSONArray) new JSONParser().parse(f);
-        SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ");
+        //SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ");
 
         Iterator itr = ja.iterator();
 
         while (itr.hasNext()) {
             JSONObject jo = (JSONObject) itr.next();
-            int ticket_number = Integer.parseInt( (String) jo.get("ticket_number"));
+            int ticket_number = Integer.parseInt(jo.get("ticket_number").toString());
             int plateid = Integer.parseInt((String) jo.get("plate_id"));
             String dateString = (String) jo.get("date");
-            Date date = dt.parse(dateString);
-            int zip = Integer.parseInt((String) jo.get("zip_code"));
+            //String date = dt.parse(dateString);
+            String zip_str = (String)jo.get("zip_code");
+            int zip = zip_str.equals("") ? 0 : Integer.parseInt(zip_str);
             String description = (String) jo.get("violation");
-            int fine = Integer.parseInt((String)jo.get("fine"));
+            int fine = Integer.parseInt(jo.get("fine").toString());
             String state = (String) jo.get("state");
-            Violation v = new Violation(date,fine,description,plateid,state,ticket_number,zip);
+            Violation v = new Violation(dateString,fine,description,plateid,state,ticket_number,zip);
             ret_map.put(linenum,v);
             linenum++;
         }
@@ -61,28 +62,31 @@ public class ViolationReader implements Reader{
         HashMap<Integer,Violation> ret_map = new HashMap<>();
         BufferedReader reader = null;
         FileReader f = new FileReader(this.filename);
-        SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ");
+        SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
 
         int linenum = 1;
         try {
             String line;
             reader = new BufferedReader(f);
+            int zipcode = 0;
             while ((line = reader.readLine())!=null) {
                 String [] lineData = line.split(",");
                 String dateString = lineData[0];
-                Date date = dt.parse(dateString);
+                //String date = dt.parse(dateString);
                 int fine = Integer.parseInt(lineData[1]);
                 String description = lineData[2];
                 int plateId = Integer.parseInt(lineData[3]);
                 String state = lineData[4];
                 int ticketNumber = Integer.parseInt(lineData[5]);
-                int zipcode = Integer.parseInt(lineData[6]);
-                Violation v = new Violation(date,fine,description,plateId,state,ticketNumber,zipcode);
+                // set the zipcode to zero if it is missing in the file
+                zipcode = lineData.length < 7 ? 0 : Integer.parseInt(lineData[6]);
+                //int zipcode = Integer.parseInt(lineData[6]);
+                Violation v = new Violation(dateString,fine,description,plateId,state,ticketNumber,zipcode);
                 ret_map.put(linenum,v);
                 linenum++;
             }
         }
-        catch (IOException | java.text.ParseException e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
         return ret_map;
