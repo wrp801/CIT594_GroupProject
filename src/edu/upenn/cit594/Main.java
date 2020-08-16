@@ -9,6 +9,7 @@ import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.logging.Logger;
 
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.text.ParseException;
 
 public class Main {
@@ -58,6 +59,11 @@ public class Main {
         processor.displayMarketValuePerCapita(19133);
  */
 
+<<<<<<< HEAD
+        System.out.println("\nFine vs market ranking:");
+        processor.displayFinesVsMarketValue();
+=======
+>>>>>>> 5c4f2f4953e25ac635221043b5bdf8292a8d12cc
 
         // The code block below should replace the dummy block above when finished
 
