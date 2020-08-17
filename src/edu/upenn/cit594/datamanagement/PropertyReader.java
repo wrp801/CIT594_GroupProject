@@ -66,8 +66,8 @@ private int findPosition(String colname,String filename) throws IOException {
                 // Get the zipcode
                 String zipStr = lineData[colPosition.get("zip_code")].trim();
                 Matcher matcher = pattern.matcher(zipStr);
-                if (matcher.find()) continue; // skip if there are any alpha characters
-                if (zipStr.equals("")) continue; // skip if null
+                if (matcher.find()) continue; // skip if there are any alpha characters -- todo make zero instead of skipping
+                if (zipStr.equals("")) continue; // skip if null -- todo revisit, maybe we don't want to chuck; set to zero instead
                 int strLen = zipStr.length();
                 String zip_substr = strLen < 5 ? zipStr.substring(0,strLen): zipStr.substring(0,5);
                 int zip = Integer.parseInt(zip_substr.trim());
@@ -75,13 +75,13 @@ private int findPosition(String colname,String filename) throws IOException {
                 String tlaStr = lineData[colPosition.get("total_livable_area")].trim();
                 matcher = pattern.matcher(tlaStr);
                 if (matcher.find()) continue;
-                if (tlaStr.equals("")) continue; // skip if null
+                if (tlaStr.equals("")) continue; // skip if null -- todo this needs to be set null or negative 1 instead
                 double tla = Double.parseDouble(tlaStr);
                 // Get the market value
                 String marketStr = lineData[colPosition.get("market_value")].trim();
                 matcher = pattern.matcher(marketStr);
                 if (matcher.find()) continue;
-                if (marketStr.equals("")) continue; //skip if null
+                if (marketStr.equals("")) continue; //skip if null -- todo this needs to be set null or negative 1 instead
                 double market_value = Double.parseDouble(marketStr);
                 // Get the building code
                 String building_code = lineData[colPosition.get("building_code")].trim();
