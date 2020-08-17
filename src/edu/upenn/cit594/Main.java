@@ -7,6 +7,7 @@ import edu.upenn.cit594.processor.AverageMarketValue;
 import edu.upenn.cit594.processor.Formatter;
 import edu.upenn.cit594.processor.Processor;
 import edu.upenn.cit594.logging.Logger;
+import edu.upenn.cit594.ui.UserInterface;
 
 import java.io.IOException;
 import java.sql.SQLOutput;
@@ -22,7 +23,7 @@ public class Main {
         4: The name of the population input file
         5: The name of the log file
 
-        If that is succesful then prompt the user to enter a number 0-6
+        If that is successful then prompt the user to enter a number 0-6
 
         0: If entered, exit the program
         1: If entered, show the total population for all users
@@ -32,48 +33,11 @@ public class Main {
         5: If entered, show the total residential market value per capita for a specified zip code
         6: If entered, show the results for the custom computation
          */
-/*
-        ZipcodeReader zipcodeReader = new ZipcodeReader("population.txt");
-        ViolationReader violationReader = new ViolationReader("parking.csv", "csv");
-        PropertyReader propertyReader = new PropertyReader("properties.csv");
-        Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
-
-        Logger l = Logger.getInstance();
-        l.log("1","2","3","4","5");
-
-        processor.displayTotalPopulation();
-
-        System.out.println("\n");
-        processor.displayFinesPerCapita();
-
-        System.out.println("\nMarket value:");
-        processor.displayAvgMarketValue(19133);
-
-        System.out.println("\nPopulation: ");
-        processor.getPopulation(19133);
-
-        System.out.println("\nLivable area:");
-        processor.displayAvgTotalLivableArea(19133);
-
-        System.out.println("\nMarket value per capita:");
-        processor.displayMarketValuePerCapita(19133);
- */
-
-<<<<<<< HEAD
-        System.out.println("\nFine vs market ranking:");
-        processor.displayFinesVsMarketValue();
-=======
->>>>>>> 5c4f2f4953e25ac635221043b5bdf8292a8d12cc
-
-        // The code block below should replace the dummy block above when finished
 
         if (args.length != 5) {
             System.out.println("Please include exactly 5 runtime arguments.");
             System.exit(0);
         }
-
-//         This can go in UI or Processor if we think that's more appropriate
-//         Needs additional error-checking functionality
 
         String violationFileFormat = args[0];
         String violationFileName = args[1];
@@ -90,5 +54,9 @@ public class Main {
         ViolationReader violationReader = new ViolationReader(violationFile, "csv");
         PropertyReader propertyReader = new PropertyReader(propertyFile);
         Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
+
+        //Declare User Interface
+        UserInterface ui = new UserInterface(processor);
+        ui.start();
     }
 }
