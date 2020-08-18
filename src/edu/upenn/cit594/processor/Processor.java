@@ -11,10 +11,7 @@ import edu.upenn.cit594.datamanagement.ZipcodeReader;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Processor {
 
@@ -69,10 +66,13 @@ public class Processor {
 //            - ignore violations from unknown zip (I think it does this already or maybe breaks)
 //            - truncate values to four-digit precision
 
+        TreeMap<Integer, Double> zipFines = new TreeMap<>();
+
         for (Violation violation : violations.values()) {
 
             try {
                 int violationZip = violation.getZipCode();
+                if (zipFines)
                 zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
             } catch (NullPointerException ignored) {
             }
