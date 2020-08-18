@@ -1,5 +1,6 @@
 package edu.upenn.cit594.ui;
 
+import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.processor.Processor;
 
 import java.text.DecimalFormat;
@@ -18,7 +19,7 @@ public class UserInterface {
         in = new Scanner(System.in);
     }
 
-    public void start() {
+    public void start(String logfile) {
 
         while (true) {
 
@@ -35,9 +36,11 @@ public class UserInterface {
                     "\n***************************************************************************");
 
             int choice = -1;
+            Logger l = Logger.getInstance(); // added by WP
 
             try {
                 choice = in.nextInt();
+                l.log(logfile,choice); // added by WP
             } catch (InputMismatchException e) {
                 System.out.println("Please input a single integer.");
                 System.exit(0);  // Would be better to loop them back to decision step but not required
@@ -62,17 +65,26 @@ public class UserInterface {
             if (choice == 3) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
+
+                l.log(logfile,zipEntered); // added by WP
                 System.out.println(processor.displayAvgMarketValue(zipEntered));
+
             }
             if (choice == 4) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
+
+                l.log(logfile,zipEntered); // added by WP
                 System.out.println(processor.displayAvgTotalLivableArea(zipEntered));
+
             }
             if (choice == 5) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
+
+                l.log(logfile,zipEntered); // added by WP
                 System.out.println(processor.displayMarketValuePerCapita(zipEntered));
+
             }
             if (choice == 6) {
                 HashMap<Integer, double[]> zipFinesAndValues = processor.displayFinesVsMarketValue();
