@@ -134,8 +134,9 @@ public class Processor {
             }
         }
         try {
-//            System.out.println("TOTAL VALUE: " + totalValue / 1000000);
-//            System.out.println("POPULATION: " + zipCodes.get(enteredZip).getPopulation());
+            System.out.println("TOTAL VALUE: " + totalValue / 1000000);
+            System.out.println("POPULATION: " + zipCodes.get(enteredZip).getPopulation());
+            System.out.println("SIZE: " + numProperties);
             System.out.println((int) totalValue / zipCodes.get(enteredZip).getPopulation());
         } catch (NullPointerException e) {
             System.out.println(0);
