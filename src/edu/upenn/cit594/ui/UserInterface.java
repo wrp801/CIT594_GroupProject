@@ -2,8 +2,11 @@ package edu.upenn.cit594.ui;
 
 import edu.upenn.cit594.processor.Processor;
 
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class UserInterface {
 
@@ -46,25 +49,57 @@ public class UserInterface {
             }
 
             if (choice == 0) System.exit(0);
-            if (choice == 1) processor.displayTotalPopulation();
-            if (choice == 2) processor.displayFinesPerCapita();
+            if (choice == 1) System.out.println(processor.displayTotalPopulation());
+            if (choice == 2) {
+                TreeMap<Integer, Double> zipFines = processor.displayFinesPerCapita();
+                DecimalFormat df = new DecimalFormat("0.0000");
+                for (int zipcode : zipFines.keySet()) {
+
+                    String printFines = df.format(zipFines.get(zipcode));
+                    System.out.println(zipcode + " " + printFines);
+                }
+            }
             if (choice == 3) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
-                processor.displayAvgMarketValue(zipEntered);
+                System.out.println(processor.displayAvgMarketValue(zipEntered));
             }
             if (choice == 4) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
-                processor.displayAvgTotalLivableArea(zipEntered);
+                System.out.println(processor.displayAvgTotalLivableArea(zipEntered));
             }
             if (choice == 5) {
                 System.out.println("Enter a zip code.");
                 int zipEntered = in.nextInt(); // error check later
-                processor.displayMarketValuePerCapita(zipEntered);
+                System.out.println(processor.displayMarketValuePerCapita(zipEntered));
             }
             if (choice == 6) {
-                processor.displayFinesVsMarketValue();
+                HashMap<Integer, double[]> zipFinesAndValues = processor.displayFinesVsMarketValue();
+
+                System.out.println("+++++ ZIP code plot: fine rank vs. value rank +++++\n");
+                System.out.println("Y axis: value rank");
+
+                for (int yCounter = 13; yCounter > 0; yCounter --) {
+                    System.out.print("|");
+                    for (int xCounter = 1; xCounter <= 13; xCounter ++) {
+                        int foundCount = 0;
+                        for (double[] zipInfo : zipFinesAndValues.values()) {
+                            if (Math.round(zipInfo[2] / 4) == xCounter) {
+                                if (Math.round(zipInfo[3] / 4) == yCounter) {
+                                    foundCount ++ ;
+                                }
+                            }
+                        }
+                        if (foundCount > 0) System.out.print(" * ");
+                        else System.out.print("   ");
+                    }
+                    System.out.println();
+                }
+                System.out.println(" ---------------------------------------- X axis: fine rank");
+
+                System.out.println();
+
             }
 
         }
