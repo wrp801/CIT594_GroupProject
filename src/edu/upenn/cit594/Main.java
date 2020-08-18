@@ -34,10 +34,13 @@ public class Main {
         6: If entered, show the results for the custom computation
          */
 
+
         if (args.length != 5) {
             System.out.println("Please include exactly 5 runtime arguments.");
             System.exit(0);
         }
+
+
 
         String violationFileFormat = args[0];
         String violationFileName = args[1];
@@ -50,10 +53,16 @@ public class Main {
         String populationFile = Formatter.concat(populationFileName,"txt");
         String logFile = Formatter.concat(logFileName,"txt");
 
+        Logger l = Logger.getInstance();
+        l.log(args[0],args[1],args[2],args[3],args[4]);
+
         ZipcodeReader zipcodeReader = new ZipcodeReader(populationFile);
-        ViolationReader violationReader = new ViolationReader(violationFile, "csv");
+        ViolationReader violationReader = new ViolationReader(violationFile, args[0]);
         PropertyReader propertyReader = new PropertyReader(propertyFile);
         Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
+
+
+
 
         //Declare User Interface
         UserInterface ui = new UserInterface(processor);

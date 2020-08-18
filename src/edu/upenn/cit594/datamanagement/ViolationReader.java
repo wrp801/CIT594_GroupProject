@@ -26,46 +26,58 @@ public class ViolationReader implements Reader{
     }
 
     // helper function to parse JSON data
-    private HashMap<Integer, Violation> readJson() throws IOException, ParseException, java.text.ParseException {
+    private HashMap<Integer, Violation> readJson() {
         HashMap<Integer,Violation> ret_map = new HashMap<>();
+        try {
+            BufferedReader reader = null;
+            FileReader f = new FileReader(this.filename);
+            String line;
+            int linenum = 1;
+            reader = new BufferedReader(f);
+            JSONArray ja = (JSONArray) new JSONParser().parse(f);
+            //SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ");
 
-        BufferedReader reader = null;
-        FileReader f = new FileReader(this.filename);
-        String line;
-        int linenum = 1;
-        reader = new BufferedReader(f);
-        JSONArray ja = (JSONArray) new JSONParser().parse(f);
-        //SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DDThh:mm:ssZ");
+            Iterator itr = ja.iterator();
 
-        Iterator itr = ja.iterator();
+                while (itr.hasNext()) {
+                    JSONObject jo = (JSONObject) itr.next();
+                    int ticket_number = Integer.parseInt(jo.get("ticket_number").toString());
+                    int plateid = Integer.parseInt((String) jo.get("plate_id"));
+                    String dateString = (String) jo.get("date");
+                    //String date = dt.parse(dateString);
+                    String zip_str = (String)jo.get("zip_code");
+                    int zip = zip_str.equals("") ? 0 : Integer.parseInt(zip_str);
+                    String description = (String) jo.get("violation");
+                    int fine = Integer.parseInt(jo.get("fine").toString());
+                    String state = (String) jo.get("state");
+                    Violation v = new Violation(dateString,fine,description,plateid,state,ticket_number,zip);
+                    ret_map.put(linenum,v);
+                    linenum++;
+                }
 
-        while (itr.hasNext()) {
-            JSONObject jo = (JSONObject) itr.next();
-            int ticket_number = Integer.parseInt(jo.get("ticket_number").toString());
-            int plateid = Integer.parseInt((String) jo.get("plate_id"));
-            String dateString = (String) jo.get("date");
-            //String date = dt.parse(dateString);
-            String zip_str = (String)jo.get("zip_code");
-            int zip = zip_str.equals("") ? 0 : Integer.parseInt(zip_str);
-            String description = (String) jo.get("violation");
-            int fine = Integer.parseInt(jo.get("fine").toString());
-            String state = (String) jo.get("state");
-            Violation v = new Violation(dateString,fine,description,plateid,state,ticket_number,zip);
-            ret_map.put(linenum,v);
-            linenum++;
         }
+        catch (IOException e ) {
+            System.out.println("The JSON file provided could not be found\n");
+            System.exit(1);
+        }
+        catch (ParseException p) {
+            System.out.println("Error Parsing the JSON File\n");
+            System.exit(1);
+        }
+
         return ret_map;
     }
 
     // helper function to read in the csv file
-    private HashMap<Integer,Violation> readCSV() throws FileNotFoundException {
+    private HashMap<Integer,Violation> readCSV() {
         HashMap<Integer,Violation> ret_map = new HashMap<>();
-        BufferedReader reader = null;
-        FileReader f = new FileReader(this.filename);
-        SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
 
-        int linenum = 1;
         try {
+            BufferedReader reader = null;
+            FileReader f = new FileReader(this.filename);
+            SimpleDateFormat dt = new SimpleDateFormat("YYYY-MM-DD hh:mm:ss");
+
+            int linenum = 1;
             String line;
             reader = new BufferedReader(f);
             int zipcode = 0;
@@ -87,20 +99,19 @@ public class ViolationReader implements Reader{
             }
         }
         catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("The " + this.filetype + " file " + this.filename + " entered could not be found\n");
+            System.exit(1);
         }
         return ret_map;
     }
 
+    //todo need to account for missing data in both read functions
     /**
      * Reads in either a JSON or CSV file based on the filetype argument when instantiated
      * @return a hashmap containing the row number and a Violation Object per row
-     * @throws ParseException
-     * @throws java.text.ParseException
-     * @throws IOException
      */
     @Override
-    public HashMap<Integer, Violation> read() throws ParseException, java.text.ParseException, IOException {
+    public HashMap<Integer, Violation> read() {
         HashMap<Integer,Violation> ret_map = new HashMap<>();
         if (this.filetype.equalsIgnoreCase("json")) {
             ret_map = readJson();
