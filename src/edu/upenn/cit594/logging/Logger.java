@@ -26,11 +26,9 @@ public class Logger {
 
 
     public void log(String arg1, String arg2,String arg3,String arg4,String arg5 ) {
-       long time =  System.currentTimeMillis();
-       out.println(time + " " + arg1 + " " + arg2 + " " + arg3 + " " + arg4 + " " + arg5);
-       out.flush();
-       out.close();
+        long time =  System.currentTimeMillis();
+        out.println(time + " " + arg1 + " " + arg2 + " " + arg3 + " " + arg4 + " " + arg5);
+        out.flush();
+        out.close();
     }
 }
-
-

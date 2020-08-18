@@ -45,6 +45,11 @@ private int findPosition(String colname,String filename) {
         }
         return -1;
 }
+
+    /**
+     * Reads the csv file containing property data
+     * @return A hashmap
+     */
     @Override
     public HashMap<Integer,Property> read() {
         HashMap<Integer, Property> ret_map = new HashMap<>();
@@ -78,8 +83,8 @@ private int findPosition(String colname,String filename) {
                 // Get the zipcode
                 String zipStr = lineData[colPosition.get("zip_code")].trim();
                 Matcher matcher = pattern.matcher(zipStr);
-                if (matcher.find()) {linenum ++; continue;} // skip if there are any alpha characters -- todo make zero instead of skipping
-                if (zipStr.equals("")) zipStr = "0"; // skip if null -- todo revisit, maybe we don't want to chuck; set to zero instead
+                if (matcher.find()) {linenum ++; continue;} // skip if there are any alpha characters
+                if (zipStr.equals("")) zipStr = "0";
                 int strLen = zipStr.length();
                 String zip_substr = strLen < 5 ? zipStr.substring(0,strLen): zipStr.substring(0,5);
                 int zip = Integer.parseInt(zip_substr.trim());
@@ -88,14 +93,14 @@ private int findPosition(String colname,String filename) {
                 matcher = pattern.matcher(tlaStr);
                 Matcher otherMatcher = nonZipPattern.matcher(tlaStr);
                 if (matcher.find()||otherMatcher.find()) tlaStr ="-1";
-                if (tlaStr.equals("")) tlaStr = "-1"; // skip if null -- todo this needs to be set null or negative 1 instead
+                if (tlaStr.equals("")) tlaStr = "-1"; //
                 double tla = Double.parseDouble(tlaStr);
                 // Get the market value
                 String marketStr = lineData[colPosition.get("market_value")].trim();
                 matcher = pattern.matcher(marketStr);
                 otherMatcher = nonZipPattern.matcher(marketStr);
                 if (matcher.find()||otherMatcher.find()) marketStr = "-1";
-                if (marketStr.equals("")) marketStr = "-1"; //skip if null -- todo this needs to be set null or negative 1 instead
+                if (marketStr.equals("")) marketStr = "-1";
                 double market_value = Double.parseDouble(marketStr);
                 // Get the building code
                 String building_code = lineData[colPosition.get("building_code")].trim();
