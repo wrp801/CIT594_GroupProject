@@ -88,6 +88,7 @@ private int findPosition(String colname,String filename) {
                 int strLen = zipStr.length();
                 String zip_substr = strLen < 5 ? zipStr.substring(0,strLen): zipStr.substring(0,5);
                 int zip = Integer.parseInt(zip_substr.trim());
+//                if (zip == 19138) System.out.println("FULL ZIP: " + zipStr + " | SUBSTR: " + zip_substr + " | INT: " + zip);
                 // Get the total livable area
                 String tlaStr = lineData[colPosition.get("total_livable_area")].trim();
                 matcher = pattern.matcher(tlaStr);

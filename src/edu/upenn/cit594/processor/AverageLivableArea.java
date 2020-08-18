@@ -24,7 +24,7 @@ public class AverageLivableArea implements AverageByZip{
             }
         }
 
-        double avgLivableArea = masterProperty.getTotalLiveableArea() / propertyCount;
+        int avgLivableArea = (int) Math.floor(masterProperty.getTotalLiveableArea() / propertyCount);
         System.out.println(avgLivableArea);
 
     }
