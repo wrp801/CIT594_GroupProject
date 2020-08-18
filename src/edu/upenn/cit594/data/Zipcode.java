@@ -3,7 +3,7 @@ package edu.upenn.cit594.data;
 public class Zipcode {
     protected int zipcode;
     protected int population;
-    protected double totalFines;        // placing it here in Data layer may be bad design - revisit
+//    protected double totalFines;        // placing it here in Data layer may be bad design - revisit
 //    protected double totalMarketValue;  // placing it here in Data layer may be bad design - revisit
 //    protected double totalLivableArea;  // placing it here in Data layer may be bad design - revisit
     protected int numHouses;  // placing it here in Data layer may be bad design - revisit
@@ -26,10 +26,6 @@ public class Zipcode {
         return population;
     }
 
-    public double getTotalFines() {
-        return totalFines;
-    }
-
     public int getNumHouses() {
         return numHouses;
     }
@@ -41,9 +37,5 @@ public class Zipcode {
 
     public void setPopulation(int population) {
         this.population = population;
-    }
-
-    public void setTotalFines(double totalFines) {
-        this.totalFines = totalFines;
     }
 }
