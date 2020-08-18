@@ -12,6 +12,6 @@ public interface AverageByZip {
     // DUMMY values
     List<Property> properties = new ArrayList<>();
 
-    public void displayAverage(HashMap<Integer, Property> properties, int zipCode);
+    public int displayAverage(HashMap<Integer, Property> properties, int zipCode);
 
 }

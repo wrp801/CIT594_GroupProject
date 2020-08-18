@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class AverageMarketValue implements AverageByZip{
 
-    public void displayAverage(HashMap<Integer, Property> properties, int zipCode) {
+    public int displayAverage(HashMap<Integer, Property> properties, int zipCode) {
 
         Property masterProperty = new Property(0, 0, zipCode);
         double propertyCount = 0;
@@ -24,8 +24,7 @@ public class AverageMarketValue implements AverageByZip{
             }
         }
 
-        int avgMarketValue = (int) Math.floor(masterProperty.getMarketValue() / propertyCount);
-        System.out.println(avgMarketValue);
+        return (int) Math.floor(masterProperty.getMarketValue() / propertyCount);
 
     }
 

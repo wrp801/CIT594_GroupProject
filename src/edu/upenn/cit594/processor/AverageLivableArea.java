@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class AverageLivableArea implements AverageByZip{
 
-    public void displayAverage(HashMap<Integer, Property> properties, int zipCode) {
+    public int displayAverage(HashMap<Integer, Property> properties, int zipCode) {
 
         Property masterProperty = new Property(0, 0, zipCode);
         double propertyCount = 0;
@@ -24,8 +24,7 @@ public class AverageLivableArea implements AverageByZip{
             }
         }
 
-        int avgLivableArea = (int) Math.floor(masterProperty.getTotalLiveableArea() / propertyCount);
-        System.out.println(avgLivableArea);
+        return (int) Math.floor(masterProperty.getTotalLiveableArea() / propertyCount);
 
     }
 
