@@ -19,14 +19,13 @@ public class ZipcodeReader implements Reader {
     }
 
     @Override
-    public HashMap<Integer, Zipcode> read() throws ParseException, java.text.ParseException, IOException {
+    public HashMap<Integer, Zipcode> read() {
         HashMap<Integer, Zipcode> ret_map = new HashMap<>();
-        BufferedReader reader = null;
-        FileReader f = new FileReader(this.filename);
-        String line;
-        reader = new BufferedReader(f);
-
         try {
+            BufferedReader reader = null;
+            FileReader f = new FileReader(this.filename);
+            String line;
+            reader = new BufferedReader(f);
             while ((line = reader.readLine())!=null) {
                 String[] lineData = line.split(" ");
                 int zip = Integer.parseInt(lineData[0]);
@@ -35,12 +34,11 @@ public class ZipcodeReader implements Reader {
             }
         }
         catch (IOException e ) {
-            e.printStackTrace();
+            System.out.println("The file " + this.filename + " provided could not be found\n");
+            System.exit(1);
         }
         return ret_map;
     }
-
-
 
 }
 

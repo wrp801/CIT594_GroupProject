@@ -51,9 +51,13 @@ public class Main {
         String logFile = Formatter.concat(logFileName,"txt");
 
         ZipcodeReader zipcodeReader = new ZipcodeReader(populationFile);
-        ViolationReader violationReader = new ViolationReader(violationFile, "csv");
+        ViolationReader violationReader = new ViolationReader(violationFile, args[0]);
         PropertyReader propertyReader = new PropertyReader(propertyFile);
         Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
+
+       Logger l = Logger.getInstance();
+       l.log(args[0],args[1],args[2],args[3],args[4]);
+
 
         //Declare User Interface
         UserInterface ui = new UserInterface(processor);
