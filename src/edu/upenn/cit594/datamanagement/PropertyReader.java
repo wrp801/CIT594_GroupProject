@@ -79,11 +79,15 @@ private int findPosition(String colname,String filename) {
                     continue;
                 }
 
-                String [] lineData = line.split(",");
+
+                //String [] lineData = line.split(",");
+
+                String [] lineData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 // Get the zipcode
                 String zipStr = lineData[colPosition.get("zip_code")].trim();
                 Matcher matcher = pattern.matcher(zipStr);
-                if (matcher.find()) {linenum ++; continue;} // skip if there are any alpha characters
+               // if (matcher.find()) {linenum ++; continue;} // skip if there are any alpha characters
+                if (matcher.find()) zipStr= "0";
                 if (zipStr.equals("")) zipStr = "0";
                 int strLen = zipStr.length();
                 String zip_substr = strLen < 5 ? zipStr.substring(0,strLen): zipStr.substring(0,5);
@@ -113,6 +117,7 @@ private int findPosition(String colname,String filename) {
             System.out.println("The file " + this.filename + " could not be found");
             System.exit(1);
         }
+
         return ret_map;
     }
 
