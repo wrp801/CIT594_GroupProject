@@ -126,7 +126,7 @@ public class Processor {
         for (Property property : properties.values()) {
             try {
                 if (property.getZipcode() == enteredZip) {
-                    System.out.println("VALUE: " + property.getMarketValue() + " | LIVABLE SPACE: " + property.getTotalLiveableArea());
+//                    System.out.println("VALUE: " + property.getMarketValue() + " | LIVABLE SPACE: " + property.getTotalLiveableArea());
                     totalValue += property.getMarketValue();
                     numProperties++;
                 }
