@@ -24,7 +24,7 @@ public class AverageMarketValue implements AverageByZip{
             }
         }
 
-        double avgMarketValue = masterProperty.getMarketValue() / propertyCount;
+        int avgMarketValue = (int) Math.floor(masterProperty.getMarketValue() / propertyCount);
         System.out.println(avgMarketValue);
 
     }

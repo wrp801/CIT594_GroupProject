@@ -10,6 +10,7 @@ import edu.upenn.cit594.datamanagement.ZipcodeReader;
 import edu.upenn.cit594.datamanagement.ZipcodeReader;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.*;
 
@@ -66,25 +67,37 @@ public class Processor {
 //            - ignore violations from unknown zip (I think it does this already or maybe breaks)
 //            - truncate values to four-digit precision
 
-        TreeMap<Integer, Double> zipFines = new TreeMap<>();
+        TreeMap<Integer, Integer> zipFines = new TreeMap<>(); // todo: fine should be a Double
 
         for (Violation violation : violations.values()) {
 
+            if (violation.getZipCode() >= 10000 && violation.getState().equals("PA")) {
+                try {
+                    int violationZip = violation.getZipCode();
+                    if (!zipFines.containsKey(violationZip)) {
+                        zipFines.put(violationZip, violation.getFine());
+                    } else {
+                        zipFines.put(violationZip, zipFines.get(violationZip) + violation.getFine());
+                    }
+                } catch (NullPointerException ignored) {
+                }
+            }
+        }
+
+        for (int zipcode : zipFines.keySet()) {
             try {
-                int violationZip = violation.getZipCode();
-                if (zipFines)
-                zipCodes.get(violationZip).setTotalFines(zipCodes.get(violationZip).getTotalFines() + violation.getFine());
+//                System.out.println("ZIP: " + zipcode);
+
+                double finesPerCapita = (double) zipFines.get(zipcode) / zipCodes.get(zipcode).getPopulation();
+
+                DecimalFormat df = new DecimalFormat("0.0000");
+                String printFines = df.format(finesPerCapita);
+
+                System.out.println(zipcode + " " + printFines);
+
             } catch (NullPointerException ignored) {
             }
-
         }
-
-        for (Zipcode zipcode : zipCodes.values()) {
-            double finesPerCapita = zipcode.getTotalFines() / zipcode.getPopulation();
-            System.out.println(zipcode.getZipcode() + " " + finesPerCapita + "\n");
-        }
-
-        System.out.println("");
     }
 
     public void displayAvgMarketValue(int enteredZip) {

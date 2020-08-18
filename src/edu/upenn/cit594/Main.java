@@ -15,7 +15,6 @@ import java.text.ParseException;
 public class Main {
     public static void main(String[] args) throws ParseException, org.json.simple.parser.ParseException, IOException {
 
-<<<<<<< HEAD
         // TEST BLOCK (no args)
 
 //        ZipcodeReader zipcodeReader = new ZipcodeReader("population.txt");
@@ -67,8 +66,6 @@ public class Main {
         // Needs additional error-checking functionality
 
 
-=======
->>>>>>> efd9296d6d583f21a5a95db4584a76d248a2020b
         /*
         Command Line Arguments are:
         1: The format of the parking violations file (csv or json)
