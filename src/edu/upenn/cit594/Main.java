@@ -105,11 +105,16 @@ public class Main {
         String logFile = Formatter.concat(logFileName,"txt");
 
         Logger l = Logger.getInstance();
-        l.log(args[0],args[1],args[2],args[3],args[4]);
+        //l.log(args[0],args[1],args[2],args[3],args[4]);
+        l.log(logFile,args[0],args[1],args[2],args[3],args[4]);
+
 
         ZipcodeReader zipcodeReader = new ZipcodeReader(populationFile);
+        l.log(logFile,populationFile);
         ViolationReader violationReader = new ViolationReader(violationFile, args[0]);
+        l.log(logFile,violationFile);
         PropertyReader propertyReader = new PropertyReader(propertyFile);
+        l.log(logFile,propertyFile);
         Processor processor = new Processor(zipcodeReader, violationReader, propertyReader);
 
 

@@ -80,9 +80,9 @@ private int findPosition(String colname,String filename) {
                 }
 
 
-                //String [] lineData = line.split(",");
+                String [] lineData = line.split(",");
 
-                String [] lineData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                //String [] lineData = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
                 // Get the zipcode
                 String zipStr = lineData[colPosition.get("zip_code")].trim();
                 Matcher matcher = pattern.matcher(zipStr);
