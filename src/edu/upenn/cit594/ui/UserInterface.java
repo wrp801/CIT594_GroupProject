@@ -25,7 +25,7 @@ public class UserInterface {
                 "\n3 - Average market value for residences in a specified ZIP code" +
                 "\n4 - Average total livable area for residences in a specified ZIP code" +
                 "\n5 - Total residential market value per capita for a specified ZIP code" +
-                "\n6 - Show <CUSTOM FEATURE>");
+                "\n6 - Rank and plot ZIP codes by fines per capita and value per capita");
 
         int choice = -1;
 

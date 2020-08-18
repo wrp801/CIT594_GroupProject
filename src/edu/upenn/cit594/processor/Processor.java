@@ -206,16 +206,7 @@ public class Processor {
             System.out.println("");
         }
 
-        List<Double> fineRanksSorted = new ArrayList<>();
-        List<Double> valueRanksSorted = new ArrayList<>();
 
-        for (double[] zipInfo : zipFinesAndValues.values()) {
-            fineRanksSorted.add(zipInfo[2]);
-            valueRanksSorted.add(zipInfo[3]);
-        }
-
-        Collections.sort(fineRanksSorted);
-        Collections.sort(valueRanksSorted);
 
 //        System.out.println("FINES:");
 //        for (double item : fineRanksSorted) System.out.println(item);
