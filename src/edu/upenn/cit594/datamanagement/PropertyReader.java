@@ -135,7 +135,6 @@ private int findPosition(String colname,String filename) {
                     System.out.print(progressCounter + "% | ");
                     progressCounter += 5;
                 }
-                if (linenum == lineCount / 2) System.out.println();
             }
         } catch (IOException e) {
             System.out.println("The file " + this.filename + " could not be found");
