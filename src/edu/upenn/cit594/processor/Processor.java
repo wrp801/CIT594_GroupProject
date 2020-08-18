@@ -124,18 +124,22 @@ public class Processor {
         int numProperties = 0; // this is probably better design than instance variables in the Property class
 
         for (Property property : properties.values()) {
-
             try {
-                totalValue += property.getMarketValue();
-                numProperties ++ ;
+                if (property.getZipcode() == enteredZip) {
+                    System.out.println("VALUE: " + property.getMarketValue() + " | LIVABLE SPACE: " + property.getTotalLiveableArea());
+                    totalValue += property.getMarketValue();
+                    numProperties++;
+                }
             } catch (NullPointerException ignored) {
             }
         }
-
-        System.out.println(totalValue / zipCodes.get(enteredZip).getPopulation());
-        System.out.println("VAL: " + totalValue);
-        System.out.println("POP: " + zipCodes.get(enteredZip).getPopulation());
-        System.out.println("");
+        try {
+//            System.out.println("TOTAL VALUE: " + totalValue / 1000000);
+//            System.out.println("POPULATION: " + zipCodes.get(enteredZip).getPopulation());
+            System.out.println((int) totalValue / zipCodes.get(enteredZip).getPopulation());
+        } catch (NullPointerException e) {
+            System.out.println(0);
+        }
 
     }
 
@@ -183,7 +187,6 @@ public class Processor {
         }
 
         for (int zipCode : zipFinesAndValues.keySet()) {
-            System.out.println("ZIP: " + zipCode);
             double finesPerCapita = 0;
             double valuePerCapita = 0;
             try {
@@ -211,12 +214,12 @@ public class Processor {
             zipFinesAndValues.get(zipCode)[2] = fineRankCounter;
             zipFinesAndValues.get(zipCode)[3] = valueRankCounter;
 
-            System.out.println(zipCode + ": ");
+//            System.out.println(zipCode + ": ");
 //            System.out.println("   Fine amount: " + zipFinesAndValues.get(zipCode)[0]);
-            System.out.println("   Fine rank: " + zipFinesAndValues.get(zipCode)[2]);
+//            System.out.println("   Fine rank: " + zipFinesAndValues.get(zipCode)[2]);
 //            System.out.println("   Value amount: " + zipFinesAndValues.get(zipCode)[1]);
-            System.out.println("   Value rank: " + zipFinesAndValues.get(zipCode)[3]);
-            System.out.println("");
+//            System.out.println("   Value rank: " + zipFinesAndValues.get(zipCode)[3]);
+//            System.out.println("");
         }
 
 
@@ -233,7 +236,8 @@ public class Processor {
 //            if (zipInfo[2])
 //        }
 
-        System.out.println("ZIP code plot: fine rank vs. value rank\n");
+        System.out.println("+++++ ZIP code plot: fine rank vs. value rank +++++\n");
+        System.out.println("Y axis: value rank");
 
         for (int yCounter = 13; yCounter > 0; yCounter --) {
             System.out.print("|");
@@ -251,7 +255,7 @@ public class Processor {
             }
             System.out.println();
         }
-        System.out.println(" ___________________________________________");
+        System.out.println(" ---------------------------------------- X axis: fine rank");
 
         System.out.println();
 

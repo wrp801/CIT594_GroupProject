@@ -52,7 +52,15 @@ public class UserInterface {
         if (choice == 4) {
             System.out.println("Enter a zip code.");
             int zipEntered = in.nextInt(); // error check later
-
+            processor.displayAvgTotalLivableArea(zipEntered);
+        }
+        if (choice == 5) {
+            System.out.println("Enter a zip code.");
+            int zipEntered = in.nextInt(); // error check later
+            processor.displayMarketValuePerCapita(zipEntered);
+        }
+        if (choice == 6) {
+            processor.displayFinesVsMarketValue();
         }
 
     }
