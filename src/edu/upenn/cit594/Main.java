@@ -10,11 +10,11 @@ import edu.upenn.cit594.logging.Logger;
 import edu.upenn.cit594.ui.UserInterface;
 
 import java.io.IOException;
-import java.sql.SQLOutput;
 import java.text.ParseException;
 
 public class Main {
     public static void main(String[] args) throws ParseException, org.json.simple.parser.ParseException, IOException {
+
         /*
         Command Line Arguments are:
         1: The format of the parking violations file (csv or json)
