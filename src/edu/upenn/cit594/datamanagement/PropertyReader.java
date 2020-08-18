@@ -64,11 +64,31 @@ private int findPosition(String colname,String filename) {
             colPosition.put(s,pos);
         }
 
+        // Get size for progress counter
+
+        BufferedReader bufferedReader = null;
+        try {
+            bufferedReader = new BufferedReader(new FileReader(this.filename));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        String input;
+        int lineCount = 0;
+        while (true) {
+            try {
+                if ((input = bufferedReader.readLine()) == null) break;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            lineCount ++;
+        }
+        System.out.print("Progress: | 0% | ");
 
         try {
             BufferedReader reader = null;
             FileReader f = new FileReader(this.filename);
             int linenum = 0;
+            int progressCounter = 5;
             Pattern pattern = Pattern.compile("[A-Z]",Pattern.CASE_INSENSITIVE);
             Pattern nonZipPattern = Pattern.compile("-|\\*+|\"");
             String line;
@@ -78,7 +98,6 @@ private int findPosition(String colname,String filename) {
                     linenum++;
                     continue;
                 }
-
 
                 //String [] lineData = line.split(",");
 
@@ -112,12 +131,18 @@ private int findPosition(String colname,String filename) {
                 Property p = new Property(market_value,tla,zip,building_code);
                 ret_map.put(linenum,p);
                 linenum++;
+                if (linenum == (lineCount / 100) * progressCounter) {
+                    System.out.print(progressCounter + "% | ");
+                    progressCounter += 5;
+                }
+                if (linenum == lineCount / 2) System.out.println();
             }
         } catch (IOException e) {
             System.out.println("The file " + this.filename + " could not be found");
             System.exit(1);
         }
 
+        System.out.println();
         return ret_map;
     }
 
