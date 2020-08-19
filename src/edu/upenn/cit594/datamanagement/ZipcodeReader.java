@@ -18,6 +18,11 @@ public class ZipcodeReader implements Reader {
         this.filename = filename;
     }
 
+
+    /**
+     * Reads the zipcode and population data from the text file
+     * @return A hashmap with a row number and a zipcode object
+     */
     @Override
     public HashMap<Integer, Zipcode> read() {
         HashMap<Integer, Zipcode> ret_map = new HashMap<>();
@@ -42,42 +47,4 @@ public class ZipcodeReader implements Reader {
 
 }
 
-//public class ZipCodeReader {
-//
-//    protected String filename;
-//
-//    public ZipCodeReader(String name) {
-//        filename = name;
-//    }
-//
-//    List<ZipCode> zipCodes = new ArrayList<ZipCode>();
-//    Scanner in = null;
-//
-//    public List<ZipCode> getAllZipCodes() {
-//
-//        try {
-//            in = new Scanner(new File(filename));
-//
-//            while (in.hasNext()) {
-//
-//                String nextLine = in.nextLine();
-//                String[] items = nextLine.split(" ");
-//
-//                int zip = Integer.parseInt(items[0]);
-//                int pop = Integer.parseInt(items[1]);
-//
-//                zipCodes.add(new ZipCode(zip, pop));
-//            }
-//
-//        } catch (
-//                FileNotFoundException e) {
-//            System.out.println("Could not open ZipCodes file.");
-//            System.exit(0);
-//        }
-//
-//        return zipCodes;
-//
-//    }
-//
-//}
 

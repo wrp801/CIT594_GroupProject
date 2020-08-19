@@ -105,7 +105,6 @@ public class ViolationReader implements Reader{
         return ret_map;
     }
 
-    //todo need to account for missing data in both read functions
     /**
      * Reads in either a JSON or CSV file based on the filetype argument when instantiated
      * @return a hashmap containing the row number and a Violation Object per row
